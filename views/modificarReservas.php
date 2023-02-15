@@ -26,8 +26,15 @@
     }
     ?>
     <div class="container">
-        <form method="POST" action="<?= $url_destino ?>">
+        <form method="post" action="<?= $url_destino ?> " enctype="multipart/form-data">
             <div class="col-lg-11 col-sm-11 m-auto shadow p-3 m-5 bg-body rounded mt-5">
+
+                <div class="alert alert-info text-center" role="alert">
+                    El archivo debe ser una imagen (JPG, JPEG, GIF o PNG) y no debe superar los 5000 KB.
+                    <br>
+                    No existe el empleado 10 ni el cliente 9, se mostrá un error si lo asignas.
+                </div>
+
                 <div class="form-group row mt-2 d-flex justify-content-center ">
                     <label for="id_reserva" class="col-lg-3 col-form-label">Id reserva:</label>
                     <div class="col-lg-6">
@@ -38,21 +45,23 @@
                 <div class="form-group row mt-2 d-flex justify-content-center">
                     <label for="imagen" class="col-lg-3 col-form-label">Imagen:</label>
                     <div class="col-lg-6">
-                        <input type="text" class="form-control" id="imagen" name="imagen" value=<?= (isset($reserva) ? $reserva["imagen"] : "") ?>>
+                        <input type="file" class="form-control-file" id="imagen" name="imagen" accept="image/jpeg, image/png, image/gif">
                     </div>
                 </div>
+
+                <input type='hidden' name='imagen_antiguo' value=<?= (isset($reserva) ? $reserva["imagen"] : "") ?>>
 
                 <div class="form-group row mt-2 d-flex justify-content-center">
                     <label for="fecha_entrada" class="col-lg-3 col-form-label">Fecha Entrada:</label>
                     <div class="col-lg-6">
-                        <input type="date" class="form-control" id="fecha_entrada" name="fecha_entrada" value=<?= (isset($reserva) ? $reserva["fecha_entrada"] : "") ?>>
+                        <input type="date" class="form-control" id="fecha_entrada" name="fecha_entrada" value="<?php echo isset($reserva) ? $reserva['fecha_entrada'] : $fecha_por_defecto_entrada; ?>">
                     </div>
                 </div>
 
-                <div class="form-group row mt-2 d-flex justify-content-center">
+                <div class=" form-group row mt-2 d-flex justify-content-center">
                     <label for="fecha_salida" class="col-lg-3 col-form-label">Fecha Salida:</label>
                     <div class="col-lg-6">
-                        <input type="date" class="form-control" id="fecha_salida" name="fecha_salida" value=<?= (isset($reserva) ? $reserva["fecha_salida"] : "") ?>>
+                        <input type="date" class="form-control" id="fecha_salida" name="fecha_salida" value="<?php echo isset($reserva) ? $reserva['fecha_salida'] : $fecha_por_defecto_salida; ?>">
                     </div>
                 </div>
 
@@ -63,7 +72,7 @@
                         <select class="form-control w-25 " id="id_empleado" name="id_empleado">
                             <?php
                             //Generamos las option del select id_empleado
-                            for ($i = 1; $i <= 120; $i++) {
+                            for ($i = 1; $i <= 10; $i++) {
                                 print("<option value='$i' ");
                                 //Si la id_empleado de nuestro reserva a modificar es la que estamos escribiendo ahora
                                 //La marcamos como seleccionada 
@@ -84,7 +93,7 @@
                         <select class="form-control w-25" id="id_cliente" name="id_cliente">
                             <?php
                             //Generamos las option del select id_cliente
-                            for ($i = 1; $i <= 120; $i++) {
+                            for ($i = 1; $i <= 9; $i++) {
                                 print("<option value='$i' ");
                                 //Si la id_cliente de nuestro reserva a modificar es la que estamos escribiendo ahora
                                 //La marcamos como seleccionada 

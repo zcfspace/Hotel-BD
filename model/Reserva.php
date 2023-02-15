@@ -9,23 +9,6 @@ use \PDOException;
 
 class Reserva
 {
-    /**Funcion que nos devuelve todos los reservas */
-    public function getReservas($conexPDO)
-    {
-        if ($conexPDO != null) {
-            try {
-                //Primero introducimos la sentencia a ejecutar con prepare
-                //Ponemos en lugar de valores directamente, interrogaciones
-                $sentencia = $conexPDO->prepare("SELECT * FROM hotel.reservas");
-                //Ejecutamos la sentencia
-                $sentencia->execute();
-                //Devolvemos los datos del reserva
-                return $sentencia->fetchAll();
-            } catch (PDOException $e) {
-                print("Error al acceder a BD" . $e->getMessage());
-            }
-        }
-    }
     /**
      * Funcion para calcular las paginas necesaria para la paginacion
      */
@@ -48,7 +31,8 @@ class Reserva
 
                 return $devolver;
             } catch (PDOException $e) {
-                print("Error al acceder a BD" . $e->getMessage());
+
+                error_log("Error al acceder a BD" . $e->getMessage());
             }
         }
     }
@@ -78,7 +62,7 @@ class Reserva
 
                 return $sentencia->fetchAll(PDO::FETCH_OBJ);
             } catch (PDOException $e) {
-                print("Error al acceder a BD" . $e->getMessage());
+                error_log("Error al acceder a BD" . $e->getMessage());
             }
         }
     }
@@ -101,15 +85,14 @@ class Reserva
                     //Devolvemos los datos del reserva
                     return $sentencia->fetch();
                 } catch (PDOException $e) {
-                    print("Error al acceder a BD" . $e->getMessage());
+                    error_log("Error al acceder a BD" . $e->getMessage());
                 }
             }
         }
     }
 
-
     /**
-     * Devuelve el detalle de la reserva 
+     * Funcion para obtener los datos relacionado de una reserva
      */
     public function getReservaDetalle($idReserva, $conexPDO)
     {
@@ -142,69 +125,14 @@ class Reserva
                     //Devolvemos los datos del reserva
                     return $sentencia->fetch();
                 } catch (PDOException $e) {
-                    print("Error al acceder a BD" . $e->getMessage());
+                    error_log("Error al acceder a BD" . $e->getMessage());
                 }
             }
         }
     }
-
     /**
-     * Devuelve las habitaciones de la reserva 
+     * Funcion para añadir reserva
      */
-    public function getReservaHabitaciones($idReserva, $conexPDO)
-    {
-        if (isset($idReserva) && is_numeric($idReserva)) {
-            if ($conexPDO != null) {
-                try {
-                    //Primero introducimos la sentencia a ejecutar con prepare
-                    //Ponemos en lugar de valores directamente, interrogaciones
-                    $sentencia = $conexPDO->prepare("SELECT habitaciones.id_habitacion, habitaciones.numero
-                                                    FROM reservas
-                                                    JOIN reservas_has_habitaciones ON reservas.id_reserva = reservas_has_habitaciones.Reservas_id_reserva
-                                                    JOIN habitaciones ON reservas_has_habitaciones.Habitaciones_id_habitacion = habitaciones.id_habitacion
-                                                    WHERE id_reserva=?");
-                    //Asociamos a cada interrogacion el valor que queremos en su lugar
-                    $sentencia->bindParam(1, $idReserva);
-                    var_dump($sentencia);
-                    //Ejecutamos la sentencia
-                    $sentencia->execute();
-                    //Devolvemos los datos del reserva
-                    return $sentencia->fetch();
-                } catch (PDOException $e) {
-                    print("Error al acceder a BD" . $e->getMessage());
-                }
-            }
-        }
-    }
-
-    /**
-     * Devuelve el servicios de la reserva 
-     */
-    public function getReservaServicios($idReserva, $conexPDO)
-    {
-        if (isset($idReserva) && is_numeric($idReserva)) {
-            if ($conexPDO != null) {
-                try {
-                    //Primero introducimos la sentencia a ejecutar con prepare
-                    //Ponemos en lugar de valores directamente, interrogaciones
-                    $sentencia = $conexPDO->prepare("SELECT servicios.id_servicio, servicios.nombre_servicio, servicios.precio
-                                                    FROM reservas
-                                                    JOIN servicios_has_reservas ON reservas.id_reserva = servicios_has_reservas.Reservas_id_reserva
-                                                    JOIN servicios ON servicios_has_reservas.Servicios_id_servicio = servicios.id_servicio
-                                                    WHERE id_reserva=?");
-                    //Asociamos a cada interrogacion el valor que queremos en su lugar
-                    $sentencia->bindParam(1, $idReserva);
-                    var_dump($sentencia);
-                    //Ejecutamos la sentencia
-                    $sentencia->execute();
-                    //Devolvemos los datos del reserva
-                    return $sentencia->fetch();
-                } catch (PDOException $e) {
-                    print("Error al acceder a BD" . $e->getMessage());
-                }
-            }
-        }
-    }
     function addReserva($reserva, $conexPDO)
     {
         $result = null;
@@ -224,25 +152,38 @@ class Reserva
                 //Ejecutamos la sentencia
                 $result = $sentencia->execute();
             } catch (PDOException $e) {
-                print("Error al acceder a BD" . $e->getMessage());
+                error_log("Error al acceder a BD" . $e->getMessage());
             }
         }
 
         return $result;
     }
 
+    /**
+     * Funcion para borrar reserva
+     */
     function delReserva($idReserva, $conexPDO)
     {
         $result = null;
         if (isset($idReserva) && is_numeric($idReserva)) {
             if ($conexPDO != null) {
                 try {
-                    //Borramos el reserva asociado a dicho id
-                    $sentencia = $conexPDO->prepare("DELETE  FROM hotel.reservas where id_reserva=?");
-                    //Asociamos a cada interrogacion el valor que queremos en su lugar
-                    $sentencia->bindParam(1, $idReserva);
-                    //Ejecutamos la sentencia
-                    $result = $sentencia->execute();
+                    //Borramos las habitaciones asociadas a la reserva
+                    $sentencia1 = $conexPDO->prepare("DELETE FROM hotel.reservas_has_habitaciones WHERE Reservas_id_reserva = ?");
+                    $sentencia1->bindParam(1, $idReserva);
+                    $sentencia1->execute();
+
+                    //Borramos los servicios asociados a la reserva
+                    $sentencia2 = $conexPDO->prepare("DELETE FROM hotel.servicios_has_reservas WHERE Reservas_id_reserva = ?");
+                    $sentencia2->bindParam(1, $idReserva);
+                    $sentencia2->execute();
+
+                    //Borramos la reserva asociada a dicho id
+                    $sentencia3 = $conexPDO->prepare("DELETE FROM hotel.reservas WHERE id_reserva = ?");
+                    $sentencia3->bindParam(1, $idReserva);
+                    $sentencia3->execute();
+
+                    $result = true;
                 } catch (PDOException $e) {
                     print("Error al borrar" . $e->getMessage());
                 }
@@ -251,6 +192,9 @@ class Reserva
         return $result;
     }
 
+    /**
+     * Funcion para actualizar reserva
+     */
     function updateReserva($reserva, $conexPDO)
     {
         $result = null;
@@ -269,7 +213,7 @@ class Reserva
                 //Ejecutamos la sentencia
                 $result = $sentencia->execute();
             } catch (PDOException $e) {
-                print("Error al acceder a BD" . $e->getMessage());
+                error_log("Error al acceder a BD" . $e->getMessage());
             }
         }
         return $result;

@@ -5,8 +5,6 @@ use \PDO;
 use \PDOException;
 
 class Utils {
-
-   
     /**
      * Funcion que se conecta a la BD y nos devuelve una conexion PDO activa
      */
@@ -23,12 +21,5 @@ class Utils {
             return $conPDO;
             die();
         }
-      
-    }
-
-    
+    } 
 }
-
-//$util = new Utils();
-
-//var_dump($util->conectar());

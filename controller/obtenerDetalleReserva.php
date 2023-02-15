@@ -16,17 +16,8 @@ $conexPDO = Utils::conectar();
 if (isset($_POST["idReserva"])) {
 
     $idReserva = $_POST["idReserva"];
-
     $datosReservaDetalle = $gestorCli->getReservaDetalle($idReserva, $conexPDO);
-
-
-    // if ($datosReservaDetalle == null || $datosReservaDetalle == 0) {
-    //     $mensaje = "error";
-    //     $mensajeAMostrar = "Error al obtener el detalle de la reserva";
-    // } else {
-    //     $mensaje = "correct";
-    //     $mensajeAMostrar = "se ha obtenido los datos correctamente";
-    // }
-    
+   
+    //Obtener los datas relacionada con la reserva
     echo json_encode($datosReservaDetalle);
 }
