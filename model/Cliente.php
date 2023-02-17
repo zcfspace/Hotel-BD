@@ -33,54 +33,60 @@ class Cliente
 
 
     /**
-     * Funcion que nos devuelve todos los clientes con paginacion
-     * */
-    public function getClientesPag($conexPDO, $ordAsc, string $campoOrd, int $numPag, int $cantElem)
+     * Funcion para calcular las paginas necesaria para la paginacion
+     */
+    public function getNumPag($conexPDO, $numPag)
     {
-
         if ($conexPDO != null) {
             try {
-                //Primero introducimos la sentencia a ejecutar con prepare
-                //Ponemos en lugar de valores directamente, interrogaciones
+                $pagina = 1;
+                if (isset($_GET["pagina"])) {
+                    $pagina = $_GET["pagina"];
+                }
+                $sentencia = $conexPDO->query("SELECT count(*) AS conteo FROM hotel.clientes");
 
-                //Query inicial
-                $query = "SELECT * FROM hotel.clientes ORDER BY ? ";
+                $conteo = $sentencia->fetchObject()->conteo;
 
-                //si esta ordenada descentemente añadimos DESC
-                if (!$ordAsc) $query = $query . "DESC ";
-
-                //Añadimos a la query la cantidad de elementos por página con LIMIT
-                //Y desde que página empieza con OFFSET
-                $query = $query . "LIMIT ? OFFSET ?";
-
-                $sentencia = $conexPDO->prepare($query);
-                //el primer parametro es el campo a ordenar
-                $sentencia->bindParam(1, $campoOrd);
-                //El segundo parametro es la cantidad de elementos por pagina
-                $sentencia->bindParam(2, $cantElem, PDO::PARAM_INT);
-                //El tercer parametro es desde que registro empieza a partir de la
-                //pagina actual
-                $offset = ($numPag - 1) * $cantElem;
-                if ($numPag != 1)
-                    $offset++;
-
-                $sentencia->bindParam(3, $offset, PDO::PARAM_INT);
-
-                //INTERESANTE 
-                //queryString contiene la sentencia sql a ejecutar
-                //print($sentencia->queryString);
-
+                $devolver[0] = ceil($conteo / $numPag);
+                $devolver[1] = $pagina;
                 //Ejecutamos la sentencia
                 $sentencia->execute();
 
-                //Devolvemos los datos del cliente
-                return $sentencia->fetchAll();
+                return $devolver;
             } catch (PDOException $e) {
-                print("Error al acceder a BD" . $e->getMessage());
+                error_log("Error al acceder a BD" . $e->getMessage());
             }
         }
     }
 
+    /**
+     * Funcion que nos devuelve todos los clientes con paginacion
+     * */
+    public function getClientesPag($conexPDO, $numPag)
+    {
+        if ($conexPDO != null) {
+            try {
+
+                $pagina = 1;
+                if (isset($_GET["pagina"])) {
+                    $pagina = $_GET["pagina"];
+                }
+                $limit = $numPag;
+
+                $offset = ($pagina - 1) * $numPag;
+
+                $sentencia = $conexPDO->prepare("SELECT * FROM hotel.clientes LIMIT ? OFFSET ?");
+                $sentencia->bindValue(1, $limit, PDO::PARAM_INT);
+                $sentencia->bindValue(2, $offset, PDO::PARAM_INT);
+
+                $sentencia->execute();
+
+                return $sentencia->fetchAll(PDO::FETCH_OBJ);
+            } catch (PDOException $e) {
+                error_log("Error al acceder a BD" . $e->getMessage());
+            }
+        }
+    }
     /**
      * Devuelve el cliente asociado a la clave primaria introducida
      */

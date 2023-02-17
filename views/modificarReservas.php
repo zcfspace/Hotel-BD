@@ -7,6 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <!--<link href="css/bootstrap.min.css" rel="stylesheet">-->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
+    <link rel="stylesheet" href="../css/style.css">
 
 </head>
 
@@ -27,7 +28,7 @@
     ?>
     <div class="container">
         <form method="post" action="<?= $url_destino ?> " enctype="multipart/form-data">
-            <div class="col-lg-11 col-sm-11 m-auto shadow p-3 m-5 bg-body rounded mt-5">
+            <div class="col-lg-11 col-sm-11 m-auto shadow p-3 m-5 bg-body rounded mt-3">
 
                 <div class="alert alert-info text-center" role="alert">
                     El archivo debe ser una imagen (JPG, JPEG, GIF o PNG) y no debe superar los 5000 KB.

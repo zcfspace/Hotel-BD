@@ -15,14 +15,14 @@ namespace views;
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="../css/style.css">
 
 </head>
 
 <body>
     <div class="container">
-        <div class="row pt-3 ">
-            <div class="col-lg-11 col-sm-11 m-auto">
-
+        <div class="row pt-3">
+            <div class="col-lg-11 col-sm-11 m-auto shadow-sm px-5 py-4 bg-body rounded">
                 <!-- Alerta error/correct -->
                 <div>
                     <svg class="visually-hidden">
@@ -59,14 +59,14 @@ namespace views;
                 </div>
 
                 <!-- Bonton para añadir reserva -->
-                <div class="text-end">
+                <div class="text-end pb-4 pe-2">
                     <form method='post' action='../controller/insertarReserva.php'>
                         <button class='btn btn-success'>Añadir Reserva</button>
                     </form>
                 </div>
 
                 <!-- Tabla reserva -->
-                <table class="table table-striped table-hover">
+                <table class="table table-striped table-hover text-center shadow p-3 mb-5 bg-body rounded">
                     <thead>
                         <tr>
                             <!-- <th scope="col"></th> -->
@@ -114,11 +114,11 @@ namespace views;
                 </table>
 
                 <!-- Modal detalle -->
-                <div class="modal fade" id="modalReserva" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="modalReserva" aria-hidden="true">
+                <div class="modal fade" id="modalReserva" data-bs-keyboard="false" tabindex="-1" aria-labelledby="modalReserva" aria-hidden="true">
                     <div class="modal-dialog">
                         <div class="modal-content">
                             <div class="modal-header">
-                                <h5 class="modal-title" id="staticBackdropLabel">Detalle</h5>
+                                <h5 class="modal-title">Detalle</h5>
                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                             </div>
                             <div class="modal-body">
@@ -233,6 +233,9 @@ namespace views;
                         <?php } ?>
                     </ul>
                 </nav>
+
+
+
             </div>
 
         </div>
@@ -245,7 +248,7 @@ namespace views;
             //Obtener el id de reseva
             $(".btn-detalle").click(function() {
                 var idReserva = $(this).data("id");
-                
+
                 //Obtener los datos relacionado de la reserva
                 $.ajax({
                     type: "POST",

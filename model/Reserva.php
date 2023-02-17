@@ -31,12 +31,10 @@ class Reserva
 
                 return $devolver;
             } catch (PDOException $e) {
-
                 error_log("Error al acceder a BD" . $e->getMessage());
             }
         }
     }
-
 
     /**
      * Funcion que nos devuelve todos los reservas con paginacion
