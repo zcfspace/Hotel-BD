@@ -12,8 +12,6 @@ $gestorCli = new Reserva();
 
 //Nos conectamos a la Bd
 $conexPDO = Utils::conectar();
-//Recolectamos los datos de los reservas
-$test = $gestorCli->getReservaDetalle("144", $conexPDO);
 
 $numPag = $gestorCli->getNumPag($conexPDO, 5);
 $datosReservas = $gestorCli->getReservasPag($conexPDO, 5);
