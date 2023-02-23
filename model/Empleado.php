@@ -121,18 +121,16 @@ class Empleado
 
             try {
                 //Preparamos la sentencia
-                $sentencia = $conexPDO->prepare("INSERT INTO hotel.empleados (id_empleado, nombre, apellido, puesto, login, pass, sueldo ) VALUES ( :id_empleado, :nombre, :apellido, :puesto, :login, :pass, :sueldo)");
+                $sentencia = $conexPDO->prepare("INSERT INTO hotel.empleados (nombre, email, password, salt, activo, cod_activation) VALUES ( :nombre, :email, :password, :salt, :activo, :cod_activation)");
 
                 //Asociamos los valores a los parametros de la sentencia sql
 
-                $sentencia->bindParam(":id_empleado", $empleado["id_empleado"]);
                 $sentencia->bindParam(":nombre", $empleado["nombre"]);
-                $sentencia->bindParam(":apellido", $empleado["apellido"]);
-                $sentencia->bindParam(":puesto", $empleado["puesto"]);
-                $sentencia->bindParam(":login", $empleado["login"]);
-                $sentencia->bindParam(":pass", $empleado["pass"]);
-                $sentencia->bindParam(":sueldo", $empleado["sueldo"]);
-
+                $sentencia->bindParam(":email", $empleado["email"]);
+                $sentencia->bindParam(":password", $empleado["password"]);
+                $sentencia->bindParam(":salt", $empleado["salt"]);
+                $sentencia->bindParam(":activo", $empleado["activo"]);
+                $sentencia->bindParam(":cod_activation", $empleado["cod_activation"]);
 
                 //Ejecutamos la sentencia
                 $result = $sentencia->execute();

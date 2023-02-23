@@ -2,6 +2,11 @@
 
 namespace views;
 
+// if (!isset($_SESSION['usuario'])) {
+//     header('Location: ../views/login.php'); // Redirigir a la página de inicio de sesión
+//     exit(); // Finalizar el script
+// }
+
 ?>
 
 <!DOCTYPE html>

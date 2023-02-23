@@ -1,5 +1,12 @@
 <?php
 
+session_start(); // Iniciar la sesión
+
+if (!isset($_SESSION['usuario'])) {
+    header('Location: ../views/login.php'); // Redirigir a la página de inicio de sesión
+    exit(); // Finalizar el script
+}
+
 use \model\Reserva;
 use \model\Utils;
 

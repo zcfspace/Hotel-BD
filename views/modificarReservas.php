@@ -1,3 +1,13 @@
+<?php
+
+// $_SESSION['usuario'] = "hola";
+
+// if (!isset($_SESSION['usuario'])) {
+//     header('Location: ../views/login.php'); // Redirigir a la página de inicio de sesión
+//     exit(); // Finalizar el script
+// }
+?>
+
 <!DOCTYPE html>
 <html>
 
@@ -28,7 +38,7 @@
     ?>
     <div class="container">
         <form method="post" action="<?= $url_destino ?> " enctype="multipart/form-data">
-            <div class="col-lg-11 col-sm-11 m-auto shadow p-3 m-5 bg-body rounded mt-3">
+            <div class="col-lg-11 col-sm-11 m-auto shadow-sm p-3 m-5 bg-body rounded mt-3">
 
                 <div class="alert alert-info text-center" role="alert">
                     El archivo debe ser una imagen (JPG, JPEG, GIF o PNG) y no debe superar los 5000 KB.
@@ -55,14 +65,14 @@
                 <div class="form-group row mt-2 d-flex justify-content-center">
                     <label for="fecha_entrada" class="col-lg-3 col-form-label">Fecha Entrada:</label>
                     <div class="col-lg-6">
-                        <input type="date" class="form-control" id="fecha_entrada" name="fecha_entrada" value="<?php echo isset($reserva) ? $reserva['fecha_entrada'] : $fecha_por_defecto_entrada; ?>">
+                        <input type="datetime-local" class="form-control" id="fecha_entrada" name="fecha_entrada" value="<?php echo isset($reserva) ? $reserva['fecha_entrada'] : $fecha_por_defecto_entrada; ?>">
                     </div>
                 </div>
 
                 <div class=" form-group row mt-2 d-flex justify-content-center">
                     <label for="fecha_salida" class="col-lg-3 col-form-label">Fecha Salida:</label>
                     <div class="col-lg-6">
-                        <input type="date" class="form-control" id="fecha_salida" name="fecha_salida" value="<?php echo isset($reserva) ? $reserva['fecha_salida'] : $fecha_por_defecto_salida; ?>">
+                        <input type="datetime-local" class="form-control" id="fecha_salida" name="fecha_salida" value="<?php echo isset($reserva) ? $reserva['fecha_salida'] : $fecha_por_defecto_salida; ?>">
                     </div>
                 </div>
 
