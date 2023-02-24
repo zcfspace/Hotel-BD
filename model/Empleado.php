@@ -113,6 +113,49 @@ class Empleado
         }
     }
 
+    /**
+     * Funcion para la activacion de cuenta 
+     */
+    public function activateEmpleado($idEmpleado, $cod_activation, $conexPDO)
+    {
+        if (isset($idEmpleado) && is_numeric($idEmpleado) && isset($cod_activation)) {
+            if ($conexPDO != null) {
+                try {
+                    // Preparar la consulta para obtener los datos del empleado
+                    $sentencia = $conexPDO->prepare("SELECT * FROM hotel.empleados WHERE id_empleado = ?");
+                    $sentencia->bindParam(1, $idEmpleado);
+                    $sentencia->execute();
+
+                    // Comprobar si se ha encontrado el empleado
+                    $empleado = $sentencia->fetch();
+
+                    if ($empleado) {
+                        // Verificar si el código de activación recibido es igual al de la base de datos
+                        if ($empleado['cod_activation'] === $cod_activation) {
+                            // Actualizar la columna de activación del empleado en la base de datos
+                            $sentencia = $conexPDO->prepare("UPDATE hotel.empleados SET activo = 1 WHERE id_empleado = ?");
+                            $sentencia->bindParam(1, $idEmpleado);
+                            $sentencia->execute();
+
+                            return array('correct' => 'Se activo correctamente la cuenta');
+                        } else {
+                            // Si el código de activación no coincide, devolver un mensaje de error
+                            return array('error' => 'Código de activación incorrecto');
+                        }
+                    } else {
+                        // Si no se ha encontrado el empleado, devolver un mensaje de error
+                        return array('error' => 'Empleado no encontrado');
+                    }
+                } catch (PDOException $e) {
+                    print("Error al acceder a BD" . $e->getMessage());
+                }
+            }
+        }
+    }
+
+    /**
+     * Funcion para añadir empleado
+     */
     function addEmpleado($empleado, $conexPDO)
     {
 
