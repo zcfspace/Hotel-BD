@@ -1,11 +1,17 @@
 <?php
 
-session_start(); // Iniciar la sesión
+session_start();
 
-if (!isset($_SESSION['usuario'])) {
-    header('Location: ../views/login.php'); // Redirigir a la página de inicio de sesión
-    exit(); // Finalizar el script
+if (isset($_SESSION["idEmpleado"])) {
+    // La sesión existe, mostrar la información del empleado
+    echo "Bienvenido " . $_SESSION["nombre"] . "!";
+} else {
+    // La sesión no existe, redirigir a la página de login
+    header("Location: ../views/login.php");
+    exit();
 }
+
+$_SESSION["accesoPermitido"] = true;
 
 use \model\Reserva;
 use \model\Utils;
@@ -23,5 +29,4 @@ $conexPDO = Utils::conectar();
 $numPag = $gestorCli->getNumPag($conexPDO, 5);
 $datosReservas = $gestorCli->getReservasPag($conexPDO, 5);
 
-//var_dump($datosReservas);
 include("../views/mostrarReservas.php");

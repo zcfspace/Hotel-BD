@@ -16,46 +16,56 @@ require_once("../model/Utils.php");
  */
 
 //Si nos llegan datos de un empleado, implica que es el formulario el que llama al controlador
-if (isset($_POST["email"]) && isset($_POST["nombre"]) && isset($_POST["password"])) {
+if (isset($_POST["email"]) && isset($_POST["password"])) {
 
     $empleado = array();
 
     //Limpiamos los datos de posibles caracteres o codigo malicioso
     //Segun los asignamos al array de datos del empleado a registrar
-    $empleado["nombre"] = Utils::limpiar_datos($_POST["nombre"]);
+    $empleado["password"] = Utils::limpiar_datos($_POST["password"]);
     $empleado["email"] = Utils::limpiar_datos($_POST["email"]);
-
-    //Generamos una salt de 16 posiciones
-    $salt = Utils::generar_salt(16);
-    $empleado["salt"] = $salt;
-
-    //Encriptamos el password del formulario
-    //Usamos función hash() con el algoritmo sha256, que produce una salida de 256 bits (32 bytes)
-    $empleado["password"] = hash('sha256', $salt . $_POST["password"]);
-
-    //Por defecto el empleado esta deshabilitado
-    $empleado["activo"] = 0;
-
-    //Generamos el codigo de activacion
-    $empleado["cod_activation"] = Utils::generar_codigo_activacion();
 
     $gestorUsu = new Empleado();
 
     //Nos conectamos a la Bd
     $conexPDO = Utils::conectar();
 
-    //Añadimos el registro
-    $resultado = $gestorUsu->addEmpleado($empleado, $conexPDO);
+    // Comprobar las credenciales
+    $resultado = $gestorUsu->comprobarCredenciales($empleado["email"], $empleado["password"], $conexPDO);
 
-    //Si ha ido bien el mensaje sera distint
-    if ($resultado != null) {
-        $mensaje = "correct";
-        $mensajeAMostrar = "El Empleado se Registro Correctamente, proceda a la Activación de su cuenta. Condigo de activacion: " . $empleado["cod_activation"];
-        include("../views/activate.php");
+    if (is_array($resultado)) {
+        // Las credenciales son correctas
+        // Guardar la información del empleado en la sesión
+        session_start();
+        $_SESSION["idEmpleado"] = $resultado["id_empleado"];
+        $_SESSION["nombre"] = $resultado["nombre"];
+
+        // Mostrar el maincontroller
+        header("Location: mainController.php");
+        exit();
 
     } else {
-        $mensaje = "error";
-        $mensajeAMostrar = "Ha habido un fallo al acceder a la Base de Datos\n salte por la ventana ya!";
-        include("../signUp.php");
-    }
+        switch ($resultado) {
+            case "noActiva":
+                $mensaje = "error";
+                $mensajeAMostrar = "La cuenta no está activa, proceda a la activacion";
+                include("../views/active.php");
+                break;
+            case "noPass":
+                $mensaje = "error";
+                $mensajeAMostrar = "La contraseña es incorrecta";
+                include("../views/login.php");
+                break;
+            case "noEmail":
+                $mensaje = "error";
+                $mensajeAMostrar = "El email no está registrado";
+                include("../views/login.php");
+                break;
+            case "noEmailnoPass":
+                $mensaje = "error";
+                $mensajeAMostrar = "Debe introducir email y contraseña";
+                include("../views/login.php");
+                break;
+        };
+    };
 }

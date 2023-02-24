@@ -16,15 +16,13 @@ require_once("../model/Utils.php");
  */
 
 //Si nos llegan datos de un empleado, implica que es el formulario el que llama al controlador
-if (isset($_POST["cod_activation"])) {
+if (isset($_POST["cod_activation"]) && isset($_POST["email"])) {
 
     $empleado = array();
     //Limpiamos los datos de posibles caracteres o codigo malicioso
     //Segun los asignamos al array de datos del empleado a registrar
     $empleado["cod_activation"] = Utils::limpiar_datos($_POST["cod_activation"]);
-
-    //Por defecto el empleado esta deshabilitado
-    $empleado["activo"] = 0;
+    $empleado["email"] = Utils::limpiar_datos($_POST["email"]);
 
     $gestorUsu = new Empleado();
 
@@ -32,16 +30,16 @@ if (isset($_POST["cod_activation"])) {
     $conexPDO = Utils::conectar();
 
     //Añadimos el registro
-    $resultado = $gestorUsu->addEmpleado($empleado, $conexPDO);
+    $resultado = $gestorUsu->activateEmpleado($empleado["email"], $empleado["cod_activation"], $conexPDO);
 
-    //Si ha ido bien el mensaje sera distint
+    //Si ha ido bien el mensaje sera distinta
     if ($resultado != null) {
         $mensaje = "correct";
-        $mensajeAMostrar = "El Empleado se Registro Correctamente, proceda a la Activación de su cuenta. Condigo de activacion: " . $empleado["cod_activation"];
-        include("../views/activate.php");
+        $mensajeAMostrar = "Se activo correctamente, disfruta del trabajo";
+        include("../views/login.php");
     } else {
         $mensaje = "error";
-        $mensajeAMostrar = "Ha habido un fallo al acceder a la Base de Datos\n salte por la ventana ya!";
-        include("../signUp.php");
+        $mensajeAMostrar = "No exite ese usuario";
+        include("../views/activate.php");
     }
 }

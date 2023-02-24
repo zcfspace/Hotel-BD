@@ -1,10 +1,13 @@
 <?php
 
-// $_SESSION['usuario'] = "hola";
+namespace views;
 
-// if (!isset($_SESSION['usuario'])) {
-//     header('Location: ../views/login.php'); // Redirigir a la página de inicio de sesión
-//     exit(); // Finalizar el script
+// session_start();
+
+// if (!isset($_SESSION["accesoPermitido"]) || $_SESSION["accesoPermitido"] !== true) {
+//     // redireccionar a otra página o mostrar un mensaje de error
+//     header("Location: ../controller/mainController.php");
+//     exit();
 // }
 ?>
 
