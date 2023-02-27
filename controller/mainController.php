@@ -2,8 +2,6 @@
 
 session_start();
 
-var_dump($_SESSION);
-
 if (isset($_SESSION["idEmpleado"])) {
     // La sesión existe, mostrar la información del empleado
     $mensaje = "correct";

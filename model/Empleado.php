@@ -154,7 +154,7 @@ class Empleado
     /**
      * Funcion para añadir empleado
      */
-    function addEmpleado($empleado, $conexPDO)
+    public function addEmpleado($empleado, $conexPDO)
     {
         $result = null;
 
@@ -186,8 +186,10 @@ class Empleado
         }
         return $result;
     }
-
-    function comprobarCredenciales($email, $password, $conexPDO)
+    /**
+     * Funcion para comprobar el logueo 
+     */
+    public function comprobarCredenciales($email, $password, $conexPDO)
     {
         if (!empty($email) && !empty($password) && $conexPDO != null) {
             try {
@@ -225,6 +227,48 @@ class Empleado
             }
         }
         return "noEmailnoPass";
+    }
+
+    /**
+     * Funcion para cambiar contraseña
+     */
+
+    public function changePassword($empleado, $conexPDO)
+    {
+        $id_empleado = $empleado["id_empleado"];
+        $passwordActual = $empleado["passwordActual"];
+        $passwordNuevo = $empleado["passwordNuevo"];
+
+        try {
+            // Buscar el salt en base de datos
+            $sentencia = $conexPDO->prepare("SELECT * FROM hotel.empleados WHERE id_empleado= ?");
+            $sentencia->bindParam(1, $id_empleado);
+            $sentencia->execute();
+            
+            $empleadoSelect = $sentencia->fetch();
+
+            // Comprobar si el passwordActual es correcto
+            $salt = $empleadoSelect["salt"];
+            $password_hash = hash('sha256', $salt . $passwordActual);
+            if ($password_hash !== $empleadoSelect["password"]) {
+                return "La contraseña actual no es correcta.";
+            }
+
+            // Generar el nuevo salt y hash de la nueva contraseña
+            $salt = Utils::generar_salt(16);
+            $password_hash = hash('sha256', $salt . $passwordNuevo);
+
+            // Actualizar la contraseña y el salt en la base de datos
+            $sentencia = $conexPDO->prepare("UPDATE hotel.empleados SET password = ?, salt = ? WHERE id_empleado = ?");
+            $sentencia->bindParam(1, $password_hash);
+            $sentencia->bindParam(2, $salt);
+            $sentencia->bindParam(3, $id_empleado);
+            $sentencia->execute();
+
+            return "Contraseña cambiada correctamente.";
+        } catch (PDOException $e) {
+            return "Error al cambiar la contraseña: " . $e->getMessage();
+        }
     }
 
     /**

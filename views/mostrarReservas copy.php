@@ -65,7 +65,7 @@ namespace views;
                 </div>
             </div>
 
-            <div class="offcanvas offcanvas-start" data-bs-backdrop="static" tabindex="-2" id="staticBackdrop" aria-labelledby="staticBackdropLabel">
+            <div class="offcanvas offcanvas-start" data-bs-backdrop="static" tabindex="-1" id="staticBackdrop" aria-labelledby="staticBackdropLabel">
                 <div class="offcanvas-header">
                     <h5 class="offcanvas-title" id="staticBackdropLabel">Cambiar Contraseña</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
@@ -89,23 +89,6 @@ namespace views;
                             </div>
                             <button type="submit" class="btn btn-primary">Cambiar</button>
                         </form>
-                        <div class="modal fade" id="changePasswordModal" tabindex="-1" aria-labelledby="changePasswordModalLabel" aria-hidden="true">
-                            <div class="modal-dialog">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <h5 class="modal-title" id="changePasswordModalLabel">Resultado</h5>
-                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                    </div>
-                                    <div class="modal-body">
-                                        <!-- Aquí se mostrará la respuesta del servidor -->
-                                    </div>
-                                    <div class="modal-footer">
-                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
                         <script>
                             function validarFormulario() {
                                 const passwordCurrent = document.getElementById('passwordCurrent');
@@ -140,19 +123,8 @@ namespace views;
 
                                 // Si todas las validaciones pasan, enviar el formulario con AJAX
                                 if (isValid) {
-                                    $.ajax({
-                                        type: "POST",
-                                        url: "changePassword.php",
-                                        data: $("#changePassword").serialize(),
-                                        success: function(resultado) {
-                                            var AMostrar = JSON.parse(resultado);
-                                            $("#changePasswordModal .modal-body").html(AMostrar);
-                                            $("#changePasswordModal").modal("show");
-                                        }
-                                    });
-                                }
 
-                                return false; // Evita que el formulario se envíe por defecto
+                                }
                             }
                         </script>
                     </div>

@@ -5,8 +5,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Login</title>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
   <link rel="stylesheet" href="../css/login.css">
 
 </head>
@@ -55,7 +54,7 @@
         <input type="email" class="form-control" id="email" placeholder="name@example.com" name="email" value=<?= (isset($empleado) ? $empleado["email"] : "") ?>>
         <label for="email">Correo electrónico</label>
       </div>
-      
+
       <div class="form-floating">
         <input type="password" class="form-control" id="password" name="password" placeholder="Password">
         <label for="password">Contraseña</label>
