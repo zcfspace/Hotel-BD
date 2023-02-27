@@ -1,7 +1,6 @@
 <?php
 
 namespace views;
-
 // session_start();
 
 // if (!isset($_SESSION["accesoPermitido"]) || $_SESSION["accesoPermitido"] !== true) {

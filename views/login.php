@@ -55,6 +55,7 @@
         <input type="email" class="form-control" id="email" placeholder="name@example.com" name="email" value=<?= (isset($empleado) ? $empleado["email"] : "") ?>>
         <label for="email">Correo electrónico</label>
       </div>
+      
       <div class="form-floating">
         <input type="password" class="form-control" id="password" name="password" placeholder="Password">
         <label for="password">Contraseña</label>

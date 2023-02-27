@@ -63,27 +63,30 @@ class Utils
         return rand(1111, 9999);
     }
 
-    //Funcion que envia el correo de registro
-    public static function correo_registro($usuario)
-    {
-        $to = $usuario["email"];
-        $subject = "Confirma tu Cuenta";
-
-        $message = "<b>Bienvenido a esta Web " . $usuario["nombre"] . "</b>";
-        $message .= "<h1>Por favor confirma tu email</h1>";
-
-        $header = "From:prueba@somedomain.com \r\n";
-        $header .= "MIME-Version: 1.0\r\n";
-        $header .= "Content-type: text/html\r\n";
-
-        $retval = mail($to, $subject, $message, $header);
-
-        if ($retval == true) {
-            echo "Message sent successfully...";
+    //Funcion para enviar el codigo de activación
+    public static function correo_registro($email, $cod_activation) {
+        // Creamos el cuerpo del correo en formato HTML
+        $mensaje = '<html><body>';
+        $mensaje .= '<p>Estimado usuario,</p>';
+        $mensaje .= '<p>Le damos la bienvenida a nuestro sitio web. Para completar el proceso de registro, por favor ingrese el siguiente código de activación:</p>';
+        $mensaje .= '<p><strong>' . $cod_activation . '</strong></p>';
+        $mensaje .= '<p>Gracias por unirse a nosotros.</p>';
+        $mensaje .= '</body></html>';
+        
+        // Configuramos las cabeceras del correo
+        $cabeceras = 'MIME-Version: 1.0' . "\r\n";
+        $cabeceras .= 'Content-type: text/html; charset=iso-8859-1' . "\r\n";
+        $cabeceras .= 'From: info@hotelzcf.com' . "\r\n";
+        
+        // Enviamos el correo electrónico
+        if (mail($email, 'Activación de cuenta', $mensaje, $cabeceras)) {
+          // El correo ha sido enviado correctamente
+          return CORREO_ENVIADO;
         } else {
-            echo "Message could not be sent...";
+          // Ha habido un error al enviar el correo
+          return ERROR_CORREO;
         }
-    }
+      }
 }
 
 //$util = new Utils();
@@ -91,10 +94,10 @@ class Utils
 //var_dump($util->conectar());
 
 //echo Utils::limpiar_datos("<scritp ...\2>");
-//$usuario["nombre"]="Jose";
-//$usuario["email"]="vgalflo309@g.educaand.es";
+//$empreado["nombre"]="Jose";
+//$empreado["email"]="vgalflo309@g.educaand.es";
 
-//Utils::correo_registro($usuario);
+//Utils::correo_registro($empreado);
 /*
 //Ejemplo de filtrado de datos
 $email = "john.doe@example.nation.com";

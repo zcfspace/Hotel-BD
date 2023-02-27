@@ -31,13 +31,24 @@ if (isset($_POST["email"]) && isset($_POST["nombre"]) && isset($_POST["password"
 
     //Encriptamos el password del formulario
     //Usamos función hash() con el algoritmo sha256, que produce una salida de 256 bits (32 bytes)
-    $empleado["password"] = hash('sha256', $salt . $_POST["password"]);
+    $empleado["password"] = hash("sha256", $salt . $_POST["password"]);
 
     //Por defecto el empleado esta deshabilitado
-    $empleado["activo"] = 0;
+    $empleado["activo"] = 1;
 
     //Generamos el codigo de activacion
     $empleado["cod_activation"] = Utils::generar_codigo_activacion();
+
+    //Enviamos el codigo de activación al correo proporcionado
+    // $resultado_correo = Utils::correo_registro($empleado["email"],  $empleado["cod_activation"]);
+
+    // if ($resultado_correo == CORREO_ENVIADO) {
+    //     $mensaje = "correct";
+    //     $mensajeAMostrar = "El correo ha sido enviado correctamente";
+    // } else {
+    //     $mensaje = "error";
+    //     $mensajeAMostrar = "Ha habido un error al enviar el correo";
+    // }
 
     $gestorUsu = new Empleado();
 
@@ -63,4 +74,6 @@ if (isset($_POST["email"]) && isset($_POST["nombre"]) && isset($_POST["password"
             include("../views/signUp.php");
         }
     }
+} else {
+    include("../views/signUp.php");
 }

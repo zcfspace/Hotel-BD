@@ -1,4 +1,13 @@
 <?php
-session_start(); // Inicia la sesión
-session_destroy(); // Destruye la sesión actual
-header("Location: ../views/login.php"); // Redirige a la página de inicio de sesión
+session_start();
+
+// Eliminar todos los datos de la sesión
+session_unset();
+
+// Destruir la sesión actual
+session_destroy();
+
+// Redirigir a la página de login
+header("Location: ../views/login.php"); 
+
+exit();

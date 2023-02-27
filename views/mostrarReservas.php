@@ -2,6 +2,8 @@
 
 namespace views;
 
+// session_start();
+
 // if (!isset($_SESSION["accesoPermitido"]) || $_SESSION["accesoPermitido"] !== true) {
 //     // redireccionar a otra página o mostrar un mensaje de error
 //     header("Location: ../controller/mainController.php");
@@ -52,7 +54,7 @@ namespace views;
                         <img src="https://github.com/mdo.png" alt="mdo" width="32" height="32" class="rounded-circle">
                     </a>
                     <ul class="dropdown-menu text-small" aria-labelledby="dropdownUser1">
-                        <li><a class="dropdown-item" href="#">Settings</a></li>
+                        <li><a class="dropdown-item" href="../controller/changePassword.php">Cambiar Constraseña</a></li>
                         <li><a class="dropdown-item" href="#">Profile</a></li>
                         <li>
                             <hr class="dropdown-divider">

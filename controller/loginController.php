@@ -39,17 +39,17 @@ if (isset($_POST["email"]) && isset($_POST["password"])) {
         session_start();
         $_SESSION["idEmpleado"] = $resultado["id_empleado"];
         $_SESSION["nombre"] = $resultado["nombre"];
-
+        $_SESSION["email"] = $resultado["email"];
+        // $_SESSION["accesoPermitido"] = true;
         // Mostrar el maincontroller
         header("Location: mainController.php");
         exit();
-
     } else {
         switch ($resultado) {
             case "noActiva":
                 $mensaje = "error";
                 $mensajeAMostrar = "La cuenta no está activa, proceda a la activacion";
-                include("../views/active.php");
+                include("activation.php");
                 break;
             case "noPass":
                 $mensaje = "error";
@@ -68,4 +68,6 @@ if (isset($_POST["email"]) && isset($_POST["password"])) {
                 break;
         };
     };
+} else {
+    include("../views/login.php");
 }

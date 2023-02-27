@@ -132,8 +132,8 @@ class Empleado
 
                     // Comprobamos si se encontró alguna fila con ese email y ese código de activación
                     if ($sentencia->rowCount() == 1) {
-                        // Cambiamos el valor de la columna "activo" a 1
-                        $update = $conexPDO->prepare("UPDATE hotel.empleados SET activo=1 WHERE email=? AND cod_activation=?");
+                        // Cambiamos el valor de la columna "activo" a 0
+                        $update = $conexPDO->prepare("UPDATE hotel.empleados SET activo=0 WHERE email=? AND cod_activation=?");
                         $update->bindParam(1, $email);
                         $update->bindParam(2, $cod_activation);
                         $update->execute();
@@ -202,16 +202,15 @@ class Empleado
                     // Comprobamos que la contraseña es correcta
                     $salt = $empleado["salt"];
                     $password_hash = hash('sha256', $salt . $password);
-                    var_dump($password_hash);
-                    
+
                     if ($password_hash == $empleado["password"]) {
                         // Comprobamos si la cuenta está activa
-                        if ($empleado["activo"] == 1) {
-                            // Las credenciales son correctas
-                            return $empleado;
-                        } else {
+                        if ($empleado["activo"] != 0) {
                             // La cuenta no está activa
                             return "noActiva";
+                        } else {
+                            // Las credenciales son correctas
+                            return $empleado;
                         }
                     } else {
                         // La contraseña no es correcta

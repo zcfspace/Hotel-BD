@@ -2,16 +2,17 @@
 
 session_start();
 
+var_dump($_SESSION);
+
 if (isset($_SESSION["idEmpleado"])) {
     // La sesión existe, mostrar la información del empleado
-    echo "Bienvenido " . $_SESSION["nombre"] . "!";
+    $mensaje = "correct";
+    $mensajeAMostrar = "Bienvenido " . $_SESSION["nombre"] . "!";
 } else {
     // La sesión no existe, redirigir a la página de login
     header("Location: ../views/login.php");
     exit();
 }
-
-$_SESSION["accesoPermitido"] = true;
 
 use \model\Reserva;
 use \model\Utils;
