@@ -21,7 +21,7 @@ if (isset($_POST["id_empleado"]) && isset($_POST["passwordCurrent"]) && isset($_
     //Limpiamos los datos de posibles caracteres o codigo malicioso
     //Segun los asignamos al array de datos del empleado a registrar
     $empleado["id_empleado"] = Utils::limpiar_datos($_POST["id_empleado"]);
-    $empleado["passwordActual"] = Utils::limpiar_datos($_POST["passwordActual"]);
+    $empleado["passwordActual"] = Utils::limpiar_datos($_POST["passwordCurrent"]);
     $empleado["passwordNuevo"] = Utils::limpiar_datos($_POST["passwordNew2"]);
 
     $gestorUsu = new Empleado();
@@ -31,10 +31,7 @@ if (isset($_POST["id_empleado"]) && isset($_POST["passwordCurrent"]) && isset($_
 
     //Añadimos el registro
     $resultado = $gestorUsu->changePassword($empleado, $conexPDO);
-    echo $resultado;
-    error_log($resultado);
+    
     //Enviamos la respuesta al cliente en formato JSON
-    header('Content-Type: application/json');
-
     echo json_encode($resultado);
 }

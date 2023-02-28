@@ -30,14 +30,17 @@ namespace views;
     switch ($accion) {
         case "modificar":
             $url_destino = "../controller/actualizarReserva.php";
+            include 'header.php';
             break;
         case "insertar":
             $url_destino = "../controller/insertarReserva.php";
+            include 'header.php';
             break;
         default:
             $url_destino = "../views/mostrarReserva.php";
     }
     ?>
+
     <div class="container">
         <form method="post" action="<?= $url_destino ?> " enctype="multipart/form-data">
             <div class="col-lg-11 col-sm-11 m-auto shadow-sm p-3 m-5 bg-body rounded mt-3">

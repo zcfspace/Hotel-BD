@@ -39,7 +39,7 @@ if (isset($_POST["cod_activation"]) && isset($_POST["email"])) {
         include("../views/login.php");
     } else {
         $mensaje = "error";
-        $mensajeAMostrar = "El usuario introducido no esta registrado o el codigo proporcionado está mal";
+        $mensajeAMostrar = "El usuario introducido no esta registrado o el codigo de activación está mal";
         include("../views/activate.php");
     }
 } else {

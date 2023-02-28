@@ -1,87 +1,42 @@
-<html>
+<!-- Button trigger modal -->
+<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#changePasswordModal">
 
-<head>
-    <title>register</title>
-    <script type="text/javascript">
-        function id(id) {
-            return document.getElementById(id);
-        }
-        function setCookie(c_name, value, expiredays) {
-            var exdate = new Date();
-            exdate.setDate(exdate.getDate() + expiredays);
-            document.cookie = c_name + "=" + escape(value) +
-                ((expiredays == null) ? "" : ";expires=" + exdate.toUTCString());
-        }
-        function checkpw(form) {
-            if (form.password.value != form.chkpasswd.value) {
-                id("note3").textContent = "password and checkpassword not same";
-                form.username.focus();
-                return;
-            }
-            else
-                id("note3").textContent = "";
-        }
-        function register(form) {
-            if (form.username.value == "") {
-                id("note1").textContent = "please enter the username";
-                form.username.focus();
-                return;
-            }
-            else
-                id("note1").textContent = "";
-            if (form.password.value == "") {
-                id("note2").textContent = "please enter the password";
-                form.password.focus();
-                return;
-            }
-            else
-                id("note1").textContent = "";
+</button>
 
-            var ajax = new XMLHttpRequest();
-            ajax.onreadystatechange = function () {
-                if (this.readyState == 4 && this.status == 200) {
-                    var check = this.responseText;
-                    if (check == "true") {
-                        setCookie('username', form.username.value, 10);
-                        alert("success");
-                        location.replace("index.html");
-                    }
-                    else if (check == "same") {
-                        id("check").textContent = "this id has been used";
-                        return;
-                    }
-                    else if (check == "false") {
-                        id("check").textContent = "wrong username or password";
-                        return;
-                    }
-                    else {
-                        id("check").textContent = check;
-                        return;
-                    }
-                }
-            }
-            ajax.open("POST", "register.php");
-            ajax.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-            ajax.send("username=" + form.username.value + "&password=" + form.password.value);
-        }
-    </script>
-</head>
+<!-- Modal -->
+<div class="modal fade" id="changePasswordModal" tabindex="-1" aria-labelledby="changePasswordModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="changePasswordModalLabel">Modal title</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                ...
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
 
-<body>
-    <form>
-        <fieldset>
-            <legend>register</legend>
-            username:<input type="text" name="username" />
-            <sapn id="note1"></sapn><br />
-            password:<input type="password" name="password" value="" /><span id="note2"></span><br />
-            checkpassword:<input type="password" name="chkpasswd" value="" onblur="checkpw(this.form)" /><span
-                id="note3"></span><br />
-            <input type="button" value="sent" onclick="register(this.form)" />
-            <p id="check"></p>
-        </fieldset>
-    </form>
-    <a href="login.html">Back</a>
-    <a href="index.html">index</a>
-</body>
 
-</html>
+<div class="modal fade" id="changePasswordModal" tabindex="-1" aria-labelledby="changePasswordModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="changePasswordModalLabel">Resultado</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <!-- Aquí se mostrará la respuesta del servidor -->
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>
