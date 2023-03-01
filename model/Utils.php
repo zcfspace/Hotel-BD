@@ -4,7 +4,18 @@ namespace model;
 
 use \PDO;
 use \PDOException;
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\Exception;
 
+require '../PHPMailer/includes/Exception.php';
+require '../PHPMailer/includes/PHPMailer.php';
+require '../PHPMailer/includes/SMTP.php';
+
+// Definimos una constante global con el código de éxito del correo
+define('CORREO_ENVIADO', 1);
+
+// Definimos una constante global con el código de error del correo
+define('ERROR_CORREO', -1);
 class Utils
 {
 
@@ -64,49 +75,45 @@ class Utils
     }
 
     //Funcion para enviar el codigo de activación
-    public static function correo_registro($email, $cod_activation) {
-        // Creamos el cuerpo del correo en formato HTML
-        $mensaje = '<html><body>';
-        $mensaje .= '<p>Estimado usuario,</p>';
-        $mensaje .= '<p>Le damos la bienvenida a nuestro sitio web. Para completar el proceso de registro, por favor ingrese el siguiente código de activación:</p>';
-        $mensaje .= '<p><strong>' . $cod_activation . '</strong></p>';
-        $mensaje .= '<p>Gracias por unirse a nosotros.</p>';
-        $mensaje .= '</body></html>';
-        
-        // Configuramos las cabeceras del correo
-        $cabeceras = 'MIME-Version: 1.0' . "\r\n";
-        $cabeceras .= 'Content-type: text/html; charset=iso-8859-1' . "\r\n";
-        $cabeceras .= 'From: info@hotelzcf.com' . "\r\n";
-        
-        // Enviamos el correo electrónico
-        if (mail($email, 'Activación de cuenta', $mensaje, $cabeceras)) {
-          // El correo ha sido enviado correctamente
-          return CORREO_ENVIADO;
-        } else {
-          // Ha habido un error al enviar el correo
-          return ERROR_CORREO;
+    public static function correo_registro($email, $cod_activation)
+    {
+        // Creamos una nueva instancia de PHPMailer
+        $mail = new PHPMailer(true);
+
+        try {
+            // Configuramos el servidor SMTP
+            $mail->SMTPDebug = 0;
+            $mail->isSMTP();
+            $mail->Host = 'smtp.gmail.com';
+            $mail->SMTPAuth = true;
+            $mail->Username = '';
+            $mail->Password = '';
+            $mail->SMTPSecure = 'tls';
+            $mail->Port = 587;
+
+            // Configuramos el mensaje
+            $mail->setFrom('', 'Remitente');
+            $mail->addAddress($email);
+            $mail->isHTML(true);
+            $mail->Subject = 'Activacion de cuenta';
+            $mail->Body = '<html><body>';
+            $mail->Body .= '<p>Estimado usuario,</p>';
+            $mail->Body .= '<p>Le damos la bienvenida a nuestro sitio web. Para completar el proceso de registro, por favor ingrese el siguiente código de activación:</p>';
+            $mail->Body .= '<p><strong>' . $cod_activation . '</strong></p>';
+            $mail->Body .= '<p>Gracias por unirse a nosotros.</p>';
+            $mail->Body .= '</body></html>';
+
+            // Enviamos el correo electrónico
+            $mail->send();
+
+            // El correo ha sido enviado correctamente
+            return CORREO_ENVIADO;
+        } catch (Exception $e) {
+            // Ha habido un error al enviar el correo
+            return ERROR_CORREO;
         }
-      }
+    }
 }
 
-//$util = new Utils();
-
-//var_dump($util->conectar());
-
-//echo Utils::limpiar_datos("<scritp ...\2>");
-//$empreado["nombre"]="Jose";
-//$empreado["email"]="vgalflo309@g.educaand.es";
-
-//Utils::correo_registro($empreado);
-/*
-//Ejemplo de filtrado de datos
-$email = "john.doe@example.nation.com";
-
-if (filter_var($email, FILTER_VALIDATE_EMAIL)) {
-  echo("$email is a valid email address");
-} else {
-  echo("$email is not a valid email address");
-}
-*/
 //Ejemplo de añadir cookie
-setcookie("nombre", "Pablo Galvan", time() + 3600, "/", "", 0);
+setcookie("nombre", "zcfspace", time() + 3600, "/", "", 0);

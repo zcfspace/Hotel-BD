@@ -270,7 +270,7 @@ namespace views;
                         var reserva = JSON.parse(datosReservaDetalle);
 
                         //Asingamos los valores 
-                        $('#imagen img').attr('src', reserva.imagen);
+                        $('#imagen img').attr('src', reserva.imagen ? reserva.imagen : '../controller/img/no_img.png');
                         $('#id_reserva').text(reserva.id_reserva);
                         $('#id_cliente').text(reserva.id_cliente);
                         $('#nombre_cliente').text(reserva.nombre_cliente);

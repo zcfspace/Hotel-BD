@@ -7,8 +7,10 @@ require_once("Utils.php");
 use \PDO;
 use \PDOException;
 
+
 class Empleado
 {
+
 
     /**Funcion que nos devuelve todos los empleados */
     public function getEmpleados($conexPDO)
@@ -244,7 +246,7 @@ class Empleado
             $sentencia = $conexPDO->prepare("SELECT * FROM hotel.empleados WHERE id_empleado= ?");
             $sentencia->bindParam(1, $id_empleado);
             $sentencia->execute();
-            
+
             $empleadoSelect = $sentencia->fetch();
 
             // Comprobar si el passwordActual es correcto

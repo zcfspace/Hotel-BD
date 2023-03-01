@@ -40,15 +40,13 @@ if (isset($_POST["email"]) && isset($_POST["nombre"]) && isset($_POST["password"
     $empleado["cod_activation"] = Utils::generar_codigo_activacion();
 
     //Enviamos el codigo de activación al correo proporcionado
-    // $resultado_correo = Utils::correo_registro($empleado["email"],  $empleado["cod_activation"]);
+    $resultado_correo = Utils::correo_registro($empleado["email"],  $empleado["cod_activation"]);
 
-    // if ($resultado_correo == CORREO_ENVIADO) {
-    //     $mensaje = "correct";
-    //     $mensajeAMostrar = "El correo ha sido enviado correctamente";
-    // } else {
-    //     $mensaje = "error";
-    //     $mensajeAMostrar = "Ha habido un error al enviar el correo";
-    // }
+    if ($resultado_correo == CORREO_ENVIADO) {
+        echo '<script>alert("El correo ha sido enviado correctamente");</script>';
+    } else {
+        echo '<script>alert("Ha habido un error al enviar el correo");</script>';
+    }
 
     $gestorUsu = new Empleado();
 
