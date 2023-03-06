@@ -8,7 +8,7 @@ namespace views;
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Login</title>
+    <title>Asignación de contraseña</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
     <link rel="stylesheet" href="../css/login.css">
@@ -16,6 +16,7 @@ namespace views;
 
 <body class="text-center" id="contenido">
     <main class="form-signin">
+
         <div>
             <svg class="visually-hidden">
                 <!-- Iconos correct-->
@@ -50,93 +51,30 @@ namespace views;
             <?php endif; ?>
         </div>
 
-        <form method="post" id="signup" action="../controller/signUpController.php" enctype="multipart/form-data">
-            <h1 class="h3 mb-3 fw-normal">Registro de cuenta</h1>
+        <form method="post" action="../controller/newPasswordSetController.php">
+            <h1 class="h3 mb-3 fw-normal">Activación de cuenta</h1>
 
             <div class="form-floating">
-                <input type="text" class="form-control" id="nombre" name="nombre" placeholder="pablo110">
-                <label for="nombre">Nombre de usuario</label>
-            </div>
-
-            <div class="form-floating">
-                <input type="email" class="form-control" id="email" name="email" placeholder="name@example.com">
+                <input required type="email" class="form-control" id="email" name="email" placeholder="name@example.com" value=<?= (isset($empleado) ? $empleado["email"] : "") ?>>
                 <label for="email">Correo electrónico</label>
             </div>
 
             <div class="form-floating">
-                <input type="password" class="form-control" id="password" name="password" placeholder="Password">
-                <label for="password">Contraseña</label>
+                <input required type="text" class="form-control" id="cod_activation" name="cod_activation" placeholder="Codigo de activación">
+                <label for="cod_activation">Codigo de verificación</label>
             </div>
 
-            <div class="checkbox mb-3">
-                <label>
-                    <input type="checkbox" required id="acept" value="acept"> Acepto las condiciones
-                </label>
+            <div class="form-floating">
+                <input required type="password" class="form-control" id="password" name="password" placeholder="password">
+                <label for="password">Contraseña Nueva</label>
             </div>
 
-            <button id="btn-submit" class="w-100 btn btn-lg btn-primary" type="submit">Siguiente</button>
-
-            <div class="mt-3">
-                <p>¿Tienes una cuenta? <a href="../views/login.php">Entrar</a></p>
-            </div>
-
-            <p class="mt-3 mb-3 text-muted">&copy; 2023</p>
+            <button class="w-100 btn btn-lg btn-primary mt-4" type="submit">Cambiar</button>
+            <p class="mt-5 mb-3 text-muted">&copy; 2023</p>
         </form>
     </main>
 
-    <script>
-        $(document).ready(function() {
-            // Escuchamos el evento submit del formulario
-            $('#signup').submit(function(event) {
-                // Evitamos que se envíe el formulario por defecto
-                event.preventDefault();
 
-                // Obtenemos los valores de los campos del formulario
-                var nombre = $('#nombre').val();
-                var email = $('#email').val();
-                var password = $('#password').val();
-                var acept = $('#acept').prop('checked');
-
-                // Validamos los campos del formulario
-                var error = false;
-
-                if (nombre == '') {
-                    $('#nombre').addClass('is-invalid');
-                    error = true;
-                } else {
-                    $('#nombre').removeClass('is-invalid');
-                }
-
-                if (email == '' || !isValidEmail(email)) {
-                    $('#email').addClass('is-invalid');
-                    error = true;
-                } else {
-                    $('#email').removeClass('is-invalid');
-                }
-
-                if (password.length < 4) {
-                    $('#password').addClass('is-invalid');
-                    error = true;
-                } else {
-                    $('#password').removeClass('is-invalid');
-                }
-
-                // Si hay algún error, no enviamos el formulario
-                if (error) {
-                    return false;
-                }
-
-                // Si todo está correcto, enviamos el formulario
-                $('#signup').unbind('submit').submit();
-            });
-
-            // Función para validar si un correo es válido
-            function isValidEmail(email) {
-                var emailReg = /^([\w-\.]+@([\w-]+\.)+[\w-]{2,4})?$/;
-                return emailReg.test(email);
-            }
-        });
-    </script>
 </body>
 
 </html>

@@ -1,13 +1,6 @@
 <?php
 
 namespace views;
-// session_start();
-
-// if (!isset($_SESSION["accesoPermitido"]) || $_SESSION["accesoPermitido"] !== true) {
-//     // redireccionar a otra página o mostrar un mensaje de error
-//     header("Location: ../controller/mainController.php");
-//     exit();
-// }
 ?>
 
 <!DOCTYPE html>

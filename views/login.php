@@ -1,3 +1,7 @@
+<?php
+
+namespace views;
+?>
 <!doctype html>
 <html lang="es">
 
@@ -60,33 +64,19 @@
         <label for="password">Contraseña</label>
       </div>
 
-      <div class="checkbox mb-3">
-        <label>
-          <input type="checkbox" value="remember-me"> Remember me
-        </label>
-      </div>
+      <div>
+        <a class="text-decoration-none" href="../views/resetPassword.php">¿Has olvidado la contraseña?</a>
+      </div> <br> 
+
+      <button class="w-100 btn btn-lg btn-primary" type="submit">Entrar</button> <br> <br>
 
       <div>
-        <p>¿No tienes una cuenta? <a href="../views/signUp.php">Regístrate</a></p>
+        <p>¿No tienes una cuenta? <a class="text-decoration-none" href="../views/signUp.php">Regístrate</a> </p>
       </div>
 
-      <button class="w-100 btn btn-lg btn-primary" type="submit">Entrar</button>
       <p class="mt-5 mb-3 text-muted">&copy; 2023</p>
     </form>
   </main>
-  <script>
-    // Guardar datos en localStorage
-    if (document.getElementById('remember-me').checked) {
-      localStorage.setItem('email', document.getElementById('email').value);
-      localStorage.setItem('password', document.getElementById('password').value);
-    }
-
-    // Recuperar datos de localStorage
-    if (localStorage.getItem('email') && localStorage.getItem('password')) {
-      document.getElementById('email').value = localStorage.getItem('email');
-      document.getElementById('password').value = localStorage.getItem('password');
-    }
-  </script>
 </body>
 
 </html>

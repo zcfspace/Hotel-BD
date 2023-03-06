@@ -86,13 +86,13 @@ class Utils
             $mail->isSMTP();
             $mail->Host = 'smtp.gmail.com';
             $mail->SMTPAuth = true;
-            $mail->Username = '';
+            $mail->Username = 'czhe581@g.educaand.es';
             $mail->Password = '';
             $mail->SMTPSecure = 'tls';
             $mail->Port = 587;
 
             // Configuramos el mensaje
-            $mail->setFrom('', 'Remitente');
+            $mail->setFrom('czhe581@g.educaand.es', 'Activar cuenta');
             $mail->addAddress($email);
             $mail->isHTML(true);
             $mail->Subject = 'Activacion de cuenta';
@@ -101,6 +101,48 @@ class Utils
             $mail->Body .= '<p>Le damos la bienvenida a nuestro sitio web. Para completar el proceso de registro, por favor ingrese el siguiente código de activación:</p>';
             $mail->Body .= '<p><strong>' . $cod_activation . '</strong></p>';
             $mail->Body .= '<p>Gracias por unirse a nosotros.</p>';
+            $mail->Body .= '<p>Esto es una prueba de PHPMailer.</p>';
+            $mail->Body .= '</body></html>';
+
+            // Enviamos el correo electrónico
+            $mail->send();
+
+            // El correo ha sido enviado correctamente
+            return CORREO_ENVIADO;
+        } catch (Exception $e) {
+            // Ha habido un error al enviar el correo
+            return ERROR_CORREO;
+        }
+    }
+
+
+    //Funcion para enviar el codigo de activación
+    public static function correo_pass_reset($email, $cod_activation)
+    {
+        // Creamos una nueva instancia de PHPMailer
+        $mail = new PHPMailer(true);
+
+        try {
+            // Configuramos el servidor SMTP
+            $mail->SMTPDebug = 0;
+            $mail->isSMTP();
+            $mail->Host = 'smtp.gmail.com';
+            $mail->SMTPAuth = true;
+            $mail->Username = 'czhe581@g.educaand.es';
+            $mail->Password = '';
+            $mail->SMTPSecure = 'tls';
+            $mail->Port = 587;
+
+            // Configuramos el mensaje
+            $mail->setFrom('czhe581@g.educaand.es', 'Recuperar contrasena');
+            $mail->addAddress($email);
+            $mail->isHTML(true);
+            $mail->Subject = 'Password ';
+            $mail->Body = '<html><body>';
+            $mail->Body .= '<p>Estimado usuario,</p>';
+            $mail->Body .= '<p>Para cambiar tu contraseña del servidor, haz clic en este enlace: <a href="http://localhost/des/unidad3/Hotel-BD/controller/newPasswordSetController.php">Cambiar contraseña</a></p>';
+            $mail->Body .= '<p>Codigo Verificación: <strong>' . $cod_activation . '</strong></p>';
+            $mail->Body .= '<p>Esto es una prueba de PHPMailer.</p>';
             $mail->Body .= '</body></html>';
 
             // Enviamos el correo electrónico

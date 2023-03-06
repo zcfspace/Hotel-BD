@@ -40,7 +40,6 @@ if (isset($_POST["email"]) && isset($_POST["password"])) {
         $_SESSION["idEmpleado"] = $resultado["id_empleado"];
         $_SESSION["nombre"] = $resultado["nombre"];
         $_SESSION["email"] = $resultado["email"];
-        // $_SESSION["accesoPermitido"] = true;
         // Mostrar el maincontroller
         header("Location: mainController.php");
         exit();

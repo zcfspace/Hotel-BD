@@ -8,7 +8,7 @@ namespace views;
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Account activation</title>
+    <title>Reseteo de contraseña</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
     <link rel="stylesheet" href="../css/login.css">
@@ -51,25 +51,19 @@ namespace views;
             <?php endif; ?>
         </div>
 
-        <form method="post" action="../controller/activation.php">
-            <h1 class="h3 mb-3 fw-normal">Activación de cuenta</h1>
+        <form method="post" action="../controller/resetPasswordController.php">
+            <h1 class="h3 mb-3 fw-normal">Recupera tu cuenta</h1>
 
             <div class="form-floating">
-                <input required type="email" class="form-control" id="email" name="email" placeholder="name@example.com" value=<?= (isset($empleado) ? $empleado["email"] : "") ?>>
+                <input type="email" required class="form-control" id="email" name="email" placeholder="name@example.com" aria-describedby="emailHelp" value=<?= (isset($empleado) ? $empleado["email"] : "") ?>>
                 <label for="email">Correo electrónico</label>
+                <div id="emailHelp" class="form-text">Introduce tu correo electrónico para buscar tu cuenta.</div>
             </div>
 
-            <div class="form-floating">
-                <input required type="text" class="form-control" id="cod_activation" name="cod_activation" placeholder="Codigo de activación">
-                <label for="cod_activation">Codigo de activación</label>
-            </div>
-
-            <button class="w-100 btn btn-lg btn-primary mt-4" type="submit">Activar</button>
+            <button class="w-100 btn btn-lg btn-primary mt-4" type="submit">Enviar</button>
             <p class="mt-5 mb-3 text-muted">&copy; 2023</p>
         </form>
     </main>
-
-    
 </body>
 
 </html>

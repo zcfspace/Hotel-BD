@@ -95,6 +95,7 @@ class Empleado
     {
         if (isset($idEmpleado) && is_numeric($idEmpleado)) {
 
+            $result = null;
 
             if ($conexPDO != null) {
                 try {
@@ -112,6 +113,35 @@ class Empleado
                     print("Error al acceder a BD" . $e->getMessage());
                 }
             }
+            return $result;
+        }
+    }
+
+
+    /**
+     * Devuelve el empleado asociado al email introducida
+     */
+    public function getEmpleadoConEmail($email, $conexPDO)
+    {
+
+        $result = null;
+
+        if ($conexPDO != null) {
+            try {
+                //Primero introducimos la sentencia a ejecutar con prepare
+                //Ponemos en lugar de valores directamente, interrogaciones
+                $sentencia = $conexPDO->prepare("SELECT * FROM hotel.empleados where email=?");
+                //Asociamos a cada interrogacion el valor que queremos en su lugar
+                $sentencia->bindParam(1, $email);
+                //Ejecutamos la sentencia
+                $sentencia->execute();
+
+                //Devolvemos los datos del empleado
+                return $sentencia->fetch();
+            } catch (PDOException $e) {
+                print("Error al acceder a BD" . $e->getMessage());
+            }
+            return $result;
         }
     }
 
@@ -152,6 +182,7 @@ class Empleado
             }
         }
     }
+
 
     /**
      * Funcion para añadir empleado
@@ -270,6 +301,58 @@ class Empleado
             return "Contraseña cambiada correctamente.";
         } catch (PDOException $e) {
             return "Error al cambiar la contraseña: " . $e->getMessage();
+        }
+    }
+
+
+
+    /**
+     * Funcion para cambiar contraseña en login
+     */
+
+    public function changePasswordEmail($empleado, $conexPDO)
+    {
+
+        $cod_activation = $empleado["cod_activation"];
+        $email = $empleado["email"];
+        $passwordNuevo = $empleado["password"];
+
+        if (!empty($email) && !empty($cod_activation)) {
+            if ($conexPDO != null) {
+                try {
+                    // Primero introducimos la sentencia a ejecutar con prepare
+                    // Ponemos en lugar de valores directamente, interrogaciones
+                    $sentencia = $conexPDO->prepare("SELECT * FROM hotel.empleados WHERE email=? AND cod_activation=?");
+                    // Asociamos a cada interrogacion el valor que queremos en su lugar
+                    $sentencia->bindParam(1, $email);
+                    $sentencia->bindParam(2, $cod_activation);
+                    // Ejecutamos la sentencia
+                    $sentencia->execute();
+
+                    // Comprobamos si se encontró alguna fila con ese email y ese código de activación
+                    if ($sentencia->rowCount() == 1) {
+                        // Cambiamos la contraseña
+                        // Generar el nuevo salt y hash de la nueva contraseña
+                        $salt = Utils::generar_salt(16);
+                        $password_hash = hash('sha256', $salt . $passwordNuevo);
+
+                        // Actualizar la contraseña y el salt en la base de datos
+                        $update = $conexPDO->prepare("UPDATE hotel.empleados SET password = ?, salt = ? WHERE email = ?");
+                        $update->bindParam(1, $password_hash);
+                        $update->bindParam(2, $salt);
+                        $update->bindParam(3, $email);
+                        $update->execute();
+
+                        // Devolvemos los datos del empleado
+                        return $sentencia->fetch();
+                    } else {
+                        // Si no se encontró ninguna fila con esos valores, devolvemos null
+                        return null;
+                    }
+                } catch (PDOException $e) {
+                    error_log("Error al acceder a BD" . $e->getMessage());
+                }
+            }
         }
     }
 

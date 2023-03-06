@@ -39,15 +39,6 @@ if (isset($_POST["email"]) && isset($_POST["nombre"]) && isset($_POST["password"
     //Generamos el codigo de activacion
     $empleado["cod_activation"] = Utils::generar_codigo_activacion();
 
-    //Enviamos el codigo de activación al correo proporcionado
-    $resultado_correo = Utils::correo_registro($empleado["email"],  $empleado["cod_activation"]);
-
-    if ($resultado_correo == CORREO_ENVIADO) {
-        echo '<script>alert("El correo ha sido enviado correctamente");</script>';
-    } else {
-        echo '<script>alert("Ha habido un error al enviar el correo");</script>';
-    }
-
     $gestorUsu = new Empleado();
 
     //Nos conectamos a la Bd
@@ -63,6 +54,15 @@ if (isset($_POST["email"]) && isset($_POST["nombre"]) && isset($_POST["password"
         include("../views/signUp.php");
     } else {
         if ($resultado != null) {
+            //Enviamos el codigo de activación al correo proporcionado
+            $resultado_correo = Utils::correo_registro($empleado["email"],  $empleado["cod_activation"]);
+
+            if ($resultado_correo == CORREO_ENVIADO) {
+                echo '<script>alert("El correo ha sido enviado correctamente");</script>';
+            } else {
+                echo '<script>alert("Ha habido un error al enviar el correo");</script>';
+            }
+
             $mensaje = "correct";
             $mensajeAMostrar = "El Empleado se Registro Correctamente, proceda a la Activación de su cuenta. Condigo de activacion: " . $empleado["cod_activation"];
             include("../views/activate.php");
